@@ -1,0 +1,317 @@
+<ui version="4.0" >
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>220</width>
+    <height>236</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>220</width>
+    <height>106</height>
+   </size>
+  </property>
+  <property name="windowTitle" >
+   <string>Sprite Viewer</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="resources.qrc" >:/new/prefix1/logo.gif</iconset>
+  </property>
+  <property name="autoFillBackground" >
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" >
+    <item row="0" column="0" >
+     <widget class="QFrame" name="frame" >
+      <layout class="QGridLayout" >
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
+        <number>2</number>
+       </property>
+       <item row="0" column="0" colspan="5" >
+        <widget class="QLabel" name="label" >
+         <property name="frameShape" >
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="4" >
+        <widget class="QSlider" name="nimages" >
+         <property name="maximum" >
+          <number>0</number>
+         </property>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4" >
+        <widget class="QLCDNumber" name="nimg" >
+         <property name="maximumSize" >
+          <size>
+           <width>51</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="numDigits" >
+          <number>3</number>
+         </property>
+         <property name="segmentStyle" >
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="5" >
+        <widget class="Line" name="line" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QPushButton" name="play_button" >
+         <property name="minimumSize" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text" >
+          <string>></string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QSpinBox" name="spin_min" >
+         <property name="minimumSize" >
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maximum" >
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" >
+        <widget class="QSpinBox" name="spin_max" >
+         <property name="minimumSize" >
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize" >
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maximum" >
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3" colspan="2" >
+        <widget class="QLabel" name="timeout_label" >
+         <property name="frameShape" >
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>220</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Archivo" >
+    <property name="title" >
+     <string>&amp;Archivo</string>
+    </property>
+    <widget class="QMenu" name="menuExportar" >
+     <property name="title" >
+      <string>&amp;Exportar...</string>
+     </property>
+     <addaction name="action_spr_bmp" />
+    </widget>
+    <addaction name="action_abrir" />
+    <addaction name="action_abrir_palete" />
+    <addaction name="separator" />
+    <addaction name="action_transparente" />
+    <addaction name="menuExportar" />
+    <addaction name="separator" />
+    <addaction name="action_Salir" />
+   </widget>
+   <widget class="QMenu" name="menuTimeout" >
+    <property name="title" >
+     <string>A&amp;nimacion</string>
+    </property>
+    <addaction name="action_set_timeout" />
+   </widget>
+   <widget class="QMenu" name="menu_Help" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_about" />
+    <addaction name="action_about_qt" />
+   </widget>
+   <addaction name="menu_Archivo" />
+   <addaction name="menuTimeout" />
+   <addaction name="menu_Help" />
+  </widget>
+  <action name="action_abrir" >
+   <property name="text" >
+    <string>&amp;Abrir...</string>
+   </property>
+  </action>
+  <action name="action_set_timeout" >
+   <property name="text" >
+    <string>Configurar &amp;Timeout</string>
+   </property>
+  </action>
+  <action name="action_abrir_palete" >
+   <property name="text" >
+    <string>Abrir &amp;Paleta...</string>
+   </property>
+  </action>
+  <action name="action_Salir" >
+   <property name="text" >
+    <string>&amp;Salir</string>
+   </property>
+  </action>
+  <action name="action_spr_bmp" >
+   <property name="text" >
+    <string>&amp;Spr a Bmp...</string>
+   </property>
+  </action>
+  <action name="action_about" >
+   <property name="text" >
+    <string>&amp;Acerca de...</string>
+   </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="action_about_qt" >
+   <property name="text" >
+    <string>Acerca de &amp;QT...</string>
+   </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="action_transparente" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>&amp;Color Fondo = transparente</string>
+   </property>
+   <property name="visible" >
+    <bool>false</bool>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>nimages</tabstop>
+  <tabstop>play_button</tabstop>
+  <tabstop>spin_min</tabstop>
+  <tabstop>spin_max</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resources.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>nimages</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>nimg</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>118</x>
+     <y>272</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>210</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Salir</sender>
+   <signal>triggered()</signal>
+   <receiver>main_window</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>109</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

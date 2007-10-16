@@ -1,0 +1,11 @@
+TEMPLATE = app
+QT = gui core
+CONFIG += qt release warn_on
+DESTDIR = bin
+OBJECTS_DIR = o
+MOC_DIR = o
+UI_DIR = o
+HEADERS = src/sprite.h src/spr_viewer.h
+SOURCES = src/main.cpp src/sprite.cpp src/spr_viewer.cpp
+RESOURCES += ui/resources.qrc
+FORMS += ui/spr_viewer.ui
