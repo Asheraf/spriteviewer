@@ -9,3 +9,4 @@ HEADERS = src/sprite.h src/spr_viewer.h
 SOURCES = src/main.cpp src/sprite.cpp src/spr_viewer.cpp
 RESOURCES += ui/resources.qrc
 FORMS += ui/spr_viewer.ui
+RC_FILE = ui/icono.rc
