@@ -19,7 +19,7 @@
    <string>Sprite Viewer</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="resources.qrc" >:/new/prefix1/logo.gif</iconset>
+   <iconset resource="resources.qrc" >:/new/prefix1/logo.png</iconset>
   </property>
   <property name="autoFillBackground" >
    <bool>true</bool>
@@ -288,12 +288,12 @@
    <slot>display(int)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>118</x>
-     <y>272</y>
+     <x>127</x>
+     <y>198</y>
     </hint>
     <hint type="destinationlabel" >
      <x>210</x>
-     <y>273</y>
+     <y>199</y>
     </hint>
    </hints>
   </connection>
