@@ -187,8 +187,9 @@ sprite_open (const char *fname, SpriteError *error)
 	FILE *f;
 	long size;
 	unsigned char *data;
-	Sprite *sprite;
-
+	Sprite *sprite = NULL;
+    
+    
 	if (!fname) {
 		if (error) *error = SE_BADARGS;
 		return NULL;
@@ -288,7 +289,7 @@ change_palete(Sprite *sprite, const char *fname, SpriteError *error)
 {
    	FILE *f;
 	long size;
-	unsigned char *palette;
+	unsigned char *palette=NULL;
 	int palette_size;
 
 	if (!fname) {
@@ -305,12 +306,18 @@ change_palete(Sprite *sprite, const char *fname, SpriteError *error)
 	fseek (f, 0, SEEK_END);
 	size = ftell (f);
     rewind(f);
-    palette=(unsigned char *) calloc(1, size * sizeof(unsigned char));
 
 	if (size < 1024) {
 		if (error) *error = SE_INVALID;
 		return;
 	}
+    
+    //Liberamos la memoria vieja
+    free(sprite->palette);
+    
+    palette=(unsigned char *) calloc(1, size * sizeof(unsigned char));
+
+
 
     size_t result;
     result = fread(palette, 1, 1024, f);
@@ -318,10 +325,12 @@ change_palete(Sprite *sprite, const char *fname, SpriteError *error)
     if (result<1024)
         if (error) *error = SE_CANTOPEN;
 
+    
 	sprite->palette = (SpritePalette *) reverse_palette (palette, 1024, &palette_size);
 	sprite->palette_size = palette_size;
 
 	fclose (f);
+    
 }
 
 void
