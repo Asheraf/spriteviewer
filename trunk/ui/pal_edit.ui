@@ -1,0 +1,192 @@
+<ui version="4.0" >
+ <class>pal_edit_dlg</class>
+ <widget class="QDialog" name="pal_edit_dlg" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>284</width>
+    <height>333</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>284</width>
+    <height>333</height>
+   </size>
+  </property>
+  <property name="maximumSize" >
+   <size>
+    <width>284</width>
+    <height>1000</height>
+   </size>
+  </property>
+  <property name="mouseTracking" >
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle" >
+   <string>Palette - Edit</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="leftMargin" >
+    <number>2</number>
+   </property>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>2</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
+   </property>
+   <property name="horizontalSpacing" >
+    <number>2</number>
+   </property>
+   <property name="verticalSpacing" >
+    <number>2</number>
+   </property>
+   <item row="0" column="0" colspan="4" >
+    <widget class="QFrame" name="frame_pal" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>16</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1" >
+    <widget class="QPushButton" name="guardar_btn" >
+     <property name="toolTip" >
+      <string>Guarda la paleta actual</string>
+     </property>
+     <property name="text" >
+      <string>&amp;Guardar Paleta...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QPushButton" name="cerrar_btn" >
+     <property name="toolTip" >
+      <string>Cierra el dialogo dejando la paleta en el sprite</string>
+     </property>
+     <property name="text" >
+      <string>&amp;Cerrar</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3" >
+    <widget class="QPushButton" name="cancel_btn" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="focusPolicy" >
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="toolTip" >
+      <string>No Implementado</string>
+     </property>
+     <property name="text" >
+      <string>&amp;Cancelar</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4" >
+    <widget class="QFrame" name="frame" >
+     <property name="minimumSize" >
+      <size>
+       <width>16</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="frameShape" >
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="leftMargin" >
+       <number>5</number>
+      </property>
+      <property name="topMargin" >
+       <number>0</number>
+      </property>
+      <property name="rightMargin" >
+       <number>5</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing" >
+       <number>0</number>
+      </property>
+      <property name="verticalSpacing" >
+       <number>0</number>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QRadioButton" name="ult_btn" >
+        <property name="text" >
+         <string>&amp;Último color usado</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QRadioButton" name="act_btn" >
+        <property name="text" >
+         <string>&amp;Color actual de la paleta</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>guardar_btn</tabstop>
+  <tabstop>cerrar_btn</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cerrar_btn</sender>
+   <signal>clicked()</signal>
+   <receiver>pal_edit_dlg</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>167</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>177</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

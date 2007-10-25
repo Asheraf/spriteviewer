@@ -192,8 +192,8 @@
     </widget>
     <addaction name="action_abrir" />
     <addaction name="action_abrir_palete" />
+    <addaction name="action_editar_paleta" />
     <addaction name="separator" />
-    <addaction name="action_transparente" />
     <addaction name="menuExportar" />
     <addaction name="separator" />
     <addaction name="action_Salir" />
@@ -211,8 +211,23 @@
     <addaction name="action_about" />
     <addaction name="action_about_qt" />
    </widget>
+   <widget class="QMenu" name="menu_Opciones" >
+    <property name="title" >
+     <string>&amp;Opciones</string>
+    </property>
+    <widget class="QMenu" name="menu_Mostrar" >
+     <property name="title" >
+      <string>&amp;Mostrar</string>
+     </property>
+     <addaction name="action_fps" />
+     <addaction name="action_tpf" />
+    </widget>
+    <addaction name="action_transparente" />
+    <addaction name="menu_Mostrar" />
+   </widget>
    <addaction name="menu_Archivo" />
    <addaction name="menuTimeout" />
+   <addaction name="menu_Opciones" />
    <addaction name="menu_Help" />
   </widget>
   <action name="action_abrir" >
@@ -222,7 +237,7 @@
   </action>
   <action name="action_set_timeout" >
    <property name="text" >
-    <string>Configurar &amp;Timeout</string>
+    <string>&amp;Configurar Timeout</string>
    </property>
   </action>
   <action name="action_abrir_palete" >
@@ -267,7 +282,36 @@
     <string>&amp;Color Fondo = transparente</string>
    </property>
    <property name="visible" >
-    <bool>false</bool>
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="action_editar_paleta" >
+   <property name="text" >
+    <string>E&amp;ditar Paleta...</string>
+   </property>
+  </action>
+  <action name="action_Fondo_transparente" >
+   <property name="text" >
+    <string>&amp;Fondo transparente</string>
+   </property>
+  </action>
+  <action name="action_fps" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>&amp;Frames por Segundo</string>
+   </property>
+  </action>
+  <action name="action_tpf" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>&amp;Timeout entre cada Frame</string>
    </property>
   </action>
  </widget>
