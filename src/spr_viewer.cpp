@@ -8,9 +8,17 @@ Spr_viewer::Spr_viewer( QWidget * parent, Qt::WFlags f)
 	setupUi(this);
 
     //seteamos algunas variables a un valor por defecto
-    timeout=80;
-    timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
     spr=0;
+    PLAY=false;
+
+    timeout=80;
+    //Por defecto muestra la vel de la animacion en ms/frame
+    timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+    MOSTRAR_VEL=true;
+
+    opcGroup = new QActionGroup(this);
+    opcGroup->addAction(action_fps);
+    opcGroup->addAction(action_tpf);
 
     //por defecto le fondo del sprite lo hacemos transparente
     transparente=true;
@@ -28,12 +36,76 @@ Spr_viewer::Spr_viewer( QWidget * parent, Qt::WFlags f)
     connect(action_about_qt,SIGNAL(triggered()),this,SLOT(about_qt()));
     connect(action_about,SIGNAL(triggered()),this,SLOT(about()));
     connect(action_transparente,SIGNAL(toggled(bool)),this,SLOT(trig_transp(bool)));
+    connect(action_editar_paleta, SIGNAL(triggered()), this, SLOT(ventana_pal_ed()));
+    connect(opcGroup, SIGNAL(triggered(QAction *)), this, SLOT(mostrar_vel_anim(QAction *)));
 }
 
-//Si el action ta checked (actualiza la variable de la clase) [REVISAR]
+//se fija si tiene que mostrar la velocidad en ms/frame o en FPS
+void Spr_viewer::mostrar_vel_anim(QAction *action)
+{
+    if (action==action_fps)
+    {
+        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+        timeout_label->setText(QString::number(1000/timeout) + tr(" FPS"));
+        action_set_timeout->setText(tr("&Configurar FPS"));
+        MOSTRAR_VEL=false;
+    } else if (action==action_tpf) {
+        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+        timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+        action_set_timeout->setText(tr("&Configurar Timeout"));
+        MOSTRAR_VEL=true;
+    }
+}
+
+//muestra el dialogo para editar la paleta
+void Spr_viewer::ventana_pal_ed()
+{
+    //Si no hay un sprite cargado (por lo tanto no hay una paleta)
+    if (!spr)
+    {
+        //muestra el dialogo con el color por defecto (todo negro)
+        ventana= new Pal_edit(this);
+    } else {
+        //inicializa el dialogo con la paleta actual
+        ventana= new Pal_edit(this, 0, spr->palette, spr->palette_size);
+
+        //conecta las señales necesarias para cambiar el color automaticamente
+        connect(ventana, SIGNAL(color_changed(int, unsigned int, unsigned int, unsigned int)),
+                this, SLOT(cambio_color_paleta(int, unsigned int, unsigned int, unsigned int)));
+        //Si se hace click en el boton cancelar vuelve a la paleta anterior (no implementado)
+        connect(ventana, SIGNAL(cancelar_ed()),
+                this, SLOT(pal_ed_cancelar()));
+    }
+
+    //Si quieren que el dialogo sea modal
+    //(que no se pueda usar la ventana ppal, mientras el dialogo esta abierto),
+    //descomenten esta linea
+//    ventana->setModal(true);
+
+    //muestra la ventana
+    ventana->show();
+}
+
+//Slot que recibe la señal del boton cancelar.
+void Spr_viewer::pal_ed_cancelar()
+{
+    
+}
+
+//Slot que recibe la señal para cambiar un color de la paleta
+void Spr_viewer::cambio_color_paleta(int id, unsigned int r, unsigned int g, unsigned int b)
+{
+    spr->palette[id].r=r;
+    spr->palette[id].g=g;
+    spr->palette[id].b=b;
+    cambiar_imagen();
+}
+
+//Si el action ta checked (actualiza la variable de la clase)
 void Spr_viewer::trig_transp(bool check)
 {
     transparente=check;
+    cambiar_imagen();
 }
 
 //Muestra el acerca de embebido de QT
@@ -45,7 +117,8 @@ void Spr_viewer::about_qt()
 //Muestra el Acerca de de la app [REVISAR]
 void Spr_viewer::about()
 {
-    QMessageBox::about ( this, tr("Acerca de Sprite Viewer"), tr("Visite la pagina ppal: <a href=spriteviewer.sf.net>spriteviewer.sf.net</a>"));
+    QMessageBox::about ( this, tr("Acerca de Sprite Viewer"), tr("Visite la pagina principal: "
+            "spriteviewer.sf.net"));
 }
 
 //Destructor de la clase. libera el espacio si fue cargado un sprite
@@ -53,12 +126,6 @@ Spr_viewer::~Spr_viewer()
 {
     if (spr)
         sprite_free(spr);
-}
-
-//Funcion sobrecargada para actuar como SLOT del action_abrir
-void Spr_viewer::abrir_archivo()
-{
-    abrir_archivo("");
 }
 
 //Funcion que abre un archivo .spr pasado como argumento
@@ -106,13 +173,12 @@ void Spr_viewer::abrir_palete()
     //Si el archivo es valido
     if (QFile::exists(archivo))
     {
-        //llama a la funcion creada por mi =) para cambiar la paleta
-        change_palete(spr, archivo.toAscii(), NULL);
         //guarda el ultimo dir visitado
         last_dir = QDir(archivo);
-        //Forza la actualizacion de la imagen mostrada.
-        //Realmente con redibujar la imagen actual alcanza [TODO]
-        cambiar_imagen(1);
+        //llama a la funcion creada por mi =) para cambiar la paleta
+        change_palete(spr, archivo.toAscii(), NULL);
+        //Redibuja la imagen actual
+        cambiar_imagen();
     }
 }
 
@@ -138,12 +204,16 @@ void Spr_viewer::cargar_sprites()
 //funcion para cambiar la imagen dentro del label
 void Spr_viewer::cambiar_imagen(int numero)
 {
+    if(!spr) return;
+
     QPixmap mapa;
     int size[]={'\0'};
     unsigned char *buf;
+    static int actual;
+    if (numero!=-1) actual = numero;
 
     //obtengo un puntero a donde esta la imagen en BMP a mostrar
-    buf=(unsigned char *) sprite_to_bmp(spr, numero-1, size, NULL);
+    buf=(unsigned char *) sprite_to_bmp(spr, actual-1, size, NULL);
     
     //si transparente es true
     if (transparente)
@@ -151,7 +221,8 @@ void Spr_viewer::cambiar_imagen(int numero)
         QPalette app_pal;
         //obtiene el color de fondo de la ventana actual
         QColor color_fondo = app_pal.color (QPalette::Window);
-        //y lo asigna al primer elemento BGRx (en la paleta R y B estan invertidos) de la paleta del buffer
+        //y lo asigna al primer elemento BGRx (en la paleta R y B estan invertidos)
+        //de la paleta del buffer
         buf[56]=(const char)color_fondo.red();
         buf[55]=(const char)color_fondo.green();
         buf[54]=(const char)color_fondo.blue();
@@ -172,8 +243,6 @@ void Spr_viewer::cambiar_imagen(int numero)
 //slot destinado a decidir cuando el sprite tiene que animarse
 void Spr_viewer::play()
 {
-    static bool PLAY;
-
     //si esta animando
     if (PLAY)
     {
@@ -189,8 +258,14 @@ void Spr_viewer::play()
         //inicia el timeout. Esta funcion llama a adv_frame cada 'timeout' milisegundos.
         timer.start(timeout);
 
-        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
-        timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+        if (MOSTRAR_VEL)
+        {
+            //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+            timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+        } else {
+            //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+            timeout_label->setText(QString::number(1000/timeout) + tr(" FPS"));
+        }
 
         //actualiza el boton play_button (es lo mas simple que encontre =) )
         play_button->setText("||");
@@ -221,8 +296,35 @@ void Spr_viewer::adv_frame()
 void Spr_viewer::set_timeout()
 {
     bool ok;
-    timeout = QInputDialog::getInteger(this, tr("Inserte valor"),
-                                             tr("Valor del timeout (ms):"), timeout, 1, 5000, 1, &ok);
+    
+    if (MOSTRAR_VEL)
+    {
+        timeout = QInputDialog::getInteger(this, tr("Inserte valor"),
+                                                 tr("Valor del timeout (ms):"),
+                                                 timeout, 1, 5000, 1, &ok);
+    } else {
+        timeout = QInputDialog::getInteger(this, tr("Inserte valor"),
+                                                 tr("Inserte FPS:"),
+                                                 1000/timeout, 1, 1000, 1, &ok);
+        timeout = 1000/timeout;
+    }
+
+    if (PLAY && ok)
+    {
+        //parar el timeout que llama a la funcion adv_frame()
+        timer.stop();
+        //inicia el timeout. Esta funcion llama a adv_frame cada 'timeout' milisegundos.
+        timer.start(timeout);
+    }
+
+    if (MOSTRAR_VEL)
+    {
+        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+        timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+    } else {
+        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+        timeout_label->setText(QString::number(1000/timeout) + tr(" FPS"));
+    }
 }
 
 //funcion para exportar las imagenes del sprite a una carpeta
@@ -234,7 +336,8 @@ void Spr_viewer::spr_to_bmp()
     static QString dir;
     QString fileN;
 
-    //muestra el dialogo de seleccion de carpeta para seleccionar el directorio de destino de las imagenes
+    //muestra el dialogo de seleccion de carpeta para seleccionar el directorio
+    //de destino de las imagenes
     dir = QFileDialog::getExistingDirectory(this,
                   tr("Destino de los archivos:"),
                   dir,

@@ -75,6 +75,8 @@ typedef enum {
 	SE_CANTWRITE
 } SpriteError;
 
+//Funcion para hacer uso de reverse_palette desde el exterior
+SpritePalette * get_pal(SpritePalette *palette,int palette_len);
 
 /* Open sprite file */
 Sprite *sprite_open (const char *fname, SpriteError *error);

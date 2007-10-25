@@ -180,6 +180,11 @@ reverse_palette (unsigned char *palette, int palettelen, int *returnsize)
  * PUBLIC FUNCTIONS
  **********************/
 
+SpritePalette *
+get_pal(SpritePalette *palette,int palette_len)
+{
+    return (SpritePalette *) reverse_palette ((unsigned char *)palette, palette_len, NULL);
+}
 
 Sprite *
 sprite_open (const char *fname, SpriteError *error)
