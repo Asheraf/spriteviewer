@@ -146,7 +146,17 @@ void Spr_viewer::abrir_archivo(QString file)
         //guarda el directorio
         last_dir = QDir(archivo);
         //abre el sprite
-        spr=sprite_open(archivo.toAscii(),NULL);
+        spr=sprite_open(archivo.toLocal8Bit(),NULL);
+        if (spr==NULL)
+        {
+            qWarning() << tr("No se pudo cargar el archivo: %1").arg(archivo);
+            QMessageBox::warning(this,
+                                 "SpriteViewer",
+                                 tr("No se pudo cargar el archivo: %1").arg(archivo));
+
+            setWindowTitle("Sprite Viewer");
+            return;
+        }
         //actualiza el titulo de la ventana con el path absoluto
         setWindowTitle("Sprite Viewer - " + QFileInfo::QFileInfo(spr->filename).fileName());
         //actualiza los controles del formulario

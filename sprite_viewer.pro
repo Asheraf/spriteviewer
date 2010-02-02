@@ -2,6 +2,7 @@ TEMPLATE = app
 QT = gui core
 CONFIG += qt release warn_on
 DESTDIR = bin
+RCC_DIR = o
 OBJECTS_DIR = o
 MOC_DIR = o
 UI_DIR = o
