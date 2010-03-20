@@ -8,6 +8,7 @@
 #include <QToolButton>
 #include <QMouseEvent>
 #include <QFrame>
+#include <QTranslator>
 
 class Pal_edit : public QDialog, public Ui::pal_edit_dlg
 {
@@ -34,6 +35,9 @@ private slots:
 
     //Slot para el boton cancelar [No Implementado]
     void cancelar_ed_btn();
+
+    //Slot que recibe el pedido de cambio de idioma
+    void i18n_translate(QTranslator *trans);
 
 signals:
     //señal que se emite cada vez que se cambia un color del dialogo

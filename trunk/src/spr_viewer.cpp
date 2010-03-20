@@ -4,6 +4,17 @@
 Spr_viewer::Spr_viewer( QWidget * parent, Qt::WFlags f) 
 	: QMainWindow(parent, f)
 {
+    switch(QLocale::system().language()) {
+    case QLocale::Spanish:
+        trans.load(QString::fromUtf8(":/i18n/spritev_es"));
+        break;
+    default:
+        trans.load(QString::fromUtf8(":/i18n/spritev_en"));
+        break;
+    }
+    QApplication::installTranslator(&trans);
+    emit lang_change(&trans);
+
     //inicializamos la UI
 	setupUi(this);
 
@@ -16,6 +27,12 @@ Spr_viewer::Spr_viewer( QWidget * parent, Qt::WFlags f)
     timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
     MOSTRAR_VEL=true;
 
+    //Setea el grupo para la internacionalización (i18n)
+    i18nGroup = new QActionGroup(this);
+    i18nGroup->addAction(action_English);
+    i18nGroup->addAction(action_Espa_ol);
+
+    //Setea el grupo para las opciones (fps o tpf)
     opcGroup = new QActionGroup(this);
     opcGroup->addAction(action_fps);
     opcGroup->addAction(action_tpf);
@@ -38,6 +55,26 @@ Spr_viewer::Spr_viewer( QWidget * parent, Qt::WFlags f)
     connect(action_transparente,SIGNAL(toggled(bool)),this,SLOT(trig_transp(bool)));
     connect(action_editar_paleta, SIGNAL(triggered()), this, SLOT(ventana_pal_ed()));
     connect(opcGroup, SIGNAL(triggered(QAction *)), this, SLOT(mostrar_vel_anim(QAction *)));
+    connect(i18nGroup, SIGNAL(triggered(QAction *)), this, SLOT(i18n_translate(QAction *)));
+}
+
+//internacionalizacion
+void Spr_viewer::i18n_translate(QAction *action)
+{
+    if (action==action_Espa_ol)
+        trans.load(QString::fromUtf8(":/i18n/spritev_es"));
+    else if (action==action_English)
+        trans.load(QString::fromUtf8(":/i18n/spritev_en"));
+
+    QApplication::installTranslator(&trans);
+    this->retranslateUi(this);
+
+    if (MOSTRAR_VEL==true)
+        timeout_label->setText(QString::number(timeout) + tr(" ms / frame"));
+    else if (MOSTRAR_VEL==false)
+        timeout_label->setText(QString::number(1000/timeout) + tr(" FPS"));
+
+    emit lang_change(&trans);
 }
 
 //se fija si tiene que mostrar la velocidad en ms/frame o en FPS
@@ -45,7 +82,7 @@ void Spr_viewer::mostrar_vel_anim(QAction *action)
 {
     if (action==action_fps)
     {
-        //actualiza el label que indica cuanto tiempo dura una imagen antes de presentar otra
+        //actualiza el label que indica cuantas imagenes se presentan en 1 segundo
         timeout_label->setText(QString::number(1000/timeout) + tr(" FPS"));
         action_set_timeout->setText(tr("&Configurar FPS"));
         MOSTRAR_VEL=false;
