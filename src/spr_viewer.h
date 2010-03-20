@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QTranslator>
 
 class Spr_viewer : public QMainWindow, public Ui::main_window
 {
@@ -16,16 +17,18 @@ Q_OBJECT
     bool MOSTRAR_VEL;
     bool PLAY;
     QActionGroup *opcGroup;
+    QActionGroup *i18nGroup;
     QString archivo;
     Sprite *spr;
     QTimer timer;
     int timeout;
     bool transparente;
     Pal_edit *ventana;
+    QTranslator trans;
 
 public:
     //Constructor de la clase Spr_viewer, donde seteamos los valores por defecto de la app
-	Spr_viewer( QWidget * parent = 0, Qt::WFlags f = 0 );
+	Spr_viewer( QWidget * _parent = 0, Qt::WFlags f = 0 );
 
     //Destructor de la clase. libera el espacio si fue cargado un sprite
     ~Spr_viewer();
@@ -77,5 +80,11 @@ public slots:
 
     //se fija si tiene que mostrar la velocidad en ms/frame o en FPS
     void mostrar_vel_anim(QAction *action);
+
+    //Internacionalizacion (i18n)
+    void i18n_translate(QAction *action);
+
+signals:
+    void lang_change(QTranslator *trans);
 };
 #endif

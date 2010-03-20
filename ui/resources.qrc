@@ -1,5 +1,7 @@
 <RCC>
-    <qresource prefix="/new/prefix1" >
-        <file>logo.png</file>
-    </qresource>
+  <qresource prefix="/" >
+    <file>i18n/spritev_en.qm</file>
+    <file>i18n/spritev_es.qm</file>
+    <file>logo.png</file>
+  </qresource>
 </RCC>

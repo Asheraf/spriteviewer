@@ -56,6 +56,7 @@ Pal_edit::Pal_edit( QWidget * parent, Qt::WFlags f,
     }
 
     //conectamos las señales del dialogo
+    connect(parent, SIGNAL(lang_change(QTranslator*)), this, SLOT(i18n_translate(QTranslator*)));
     connect(&button_grp, SIGNAL(buttonClicked(int)), this, SLOT(button_click(int)));
     connect(guardar_btn, SIGNAL(clicked()), this, SLOT(guardar_palette()));
     connect(cancel_btn, SIGNAL(clicked()), this, SLOT(cancelar_ed_btn()));
@@ -145,4 +146,10 @@ void Pal_edit::button_click(int id)
 void Pal_edit::cancelar_ed_btn()
 {
     emit cancelar_ed();
+}
+
+void Pal_edit::i18n_translate(QTranslator *trans)
+{
+    QApplication::installTranslator(trans);
+    this->retranslateUi(this);
 }
